@@ -3,6 +3,8 @@
 
 
 def canUnlockAll(boxes):
+    if type(boxes) is not list or len(boxes) == 0:
+        return False
     keys = [0]
     for i in range(0, len(boxes)):
         if i in keys:

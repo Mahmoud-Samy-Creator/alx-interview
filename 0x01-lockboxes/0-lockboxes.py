@@ -3,6 +3,11 @@
 
 
 def canUnlockAll(boxes):
+    """
+    Function that checks with boolean value if the list type and
+    length to invoke two for iterations one to traverse the list
+    and the other to compaer if key is idx or not in order to open
+    """
     if type(boxes) is not list or len(boxes) == 0:
         return False
     keys = []

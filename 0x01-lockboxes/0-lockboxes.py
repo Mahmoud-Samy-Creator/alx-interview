@@ -12,19 +12,6 @@ def canUnlockAll(boxes):
             for j in boxes[i]:
                 if j < len(boxes):
                     keys.extend(boxes[j])
-
         else:
             return False
     return True
-
-if __name__ == "__main__":
-    boxes = []
-
-    keys = []
-    for n in range(1, 1000):
-        keys = []
-        for m in range(1, 1000):
-            keys.append(m)
-        boxes.append(keys)
-
-    print(canUnlockAll(boxes))

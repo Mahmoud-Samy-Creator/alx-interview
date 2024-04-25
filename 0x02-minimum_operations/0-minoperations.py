@@ -7,7 +7,7 @@ def minOperations(n):
     calculates the fewest number of operations needed
     """
     num, sum = n, 0
-    while (num != 1):
+    while (num > 1):
         if num % 2 == 0:
             sum += 2
             num /= 2

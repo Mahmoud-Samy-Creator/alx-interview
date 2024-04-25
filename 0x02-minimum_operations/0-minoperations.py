@@ -6,7 +6,7 @@ def minOperations(n):
     """
     calculates the fewest number of operations needed
     """
-    if n < 1 or type(n) is not int:
+    if n < 1 or n is not int:
         return 0
 
     num, sum = n, 0

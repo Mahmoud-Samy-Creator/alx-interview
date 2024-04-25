@@ -13,5 +13,5 @@ def minOperations(n):
             num /= 2
         else:
             sum += 3
-            num /= 3
+            num = int(num / 3)
     return sum

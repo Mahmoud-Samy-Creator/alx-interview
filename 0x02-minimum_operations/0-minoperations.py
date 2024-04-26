@@ -12,7 +12,7 @@ def minOperations(n):
     while (num > 1):
         if num % x == 0:
             num = int(num / x)
-            sum += 2
+            sum += x
             x = 2
         else:
             x += 1

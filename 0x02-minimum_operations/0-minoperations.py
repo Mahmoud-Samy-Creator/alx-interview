@@ -11,8 +11,9 @@ def minOperations(n):
     num, sum, x = n, 0, 2
     while (num > 1):
         if num % x == 0:
-            num /= x
+            num = int(num / x)
             sum += 2
+            x = 2
         else:
             x += 1
     return sum

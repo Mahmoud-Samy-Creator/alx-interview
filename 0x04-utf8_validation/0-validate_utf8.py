@@ -46,13 +46,10 @@ def validUTF8(data):
                 else:
                     break
             # Check continuation bytes
-            if count == 1 or count > 4:
-                return False
-            if bitList[i + c] > len(bitList):
+            if count > 4:
                 return False
             for c in range(1, count):
+                if i + c > len(bitList):
+                    return False
                 if bitList[i + c][0:2] != '10':
                     return False
-
-    # All checks passed, return True indicating valid UTF-8
-    return True

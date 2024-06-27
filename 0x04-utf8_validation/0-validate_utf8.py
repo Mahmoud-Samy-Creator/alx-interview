@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+"""
+UTF-validation function
+"""
+
+
 def validUTF8(data):
     """
     Validate if a list of integers represents a valid UTF-8 encoding.

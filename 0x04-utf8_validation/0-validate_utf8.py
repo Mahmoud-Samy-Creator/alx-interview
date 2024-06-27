@@ -1,32 +1,56 @@
 #!/usr/bin/python3
-"""UTF-8 Validation"""
 
-
-def get_leading_set_bits(num):
-    """returns the number of leading set bits (1)"""
-    set_bits = 0
-    helper = 1 << 7
-    while helper & num:
-        set_bits += 1
-        helper = helper >> 1
-    return set_bits
+"""
+UTF-validation function
+"""
 
 
 def validUTF8(data):
-    """determines if a given data set represents a valid UTF-8 encoding"""
-    bits_count = 0
-    for i in range(len(data)):
-        if bits_count == 0:
-            bits_count = get_leading_set_bits(data[i])
-            '''1-byte (format: 0xxxxxxx)'''
-            if bits_count == 0:
-                continue
-            '''a character in UTF-8 can be 1 to 4 bytes long'''
-            if bits_count == 1 or bits_count > 4:
-                return False
+    """
+    Validate if a list of integers represents a valid UTF-8 encoding.
+
+    Args:
+    - data: A list of integers representing bytes.
+
+    Returns:
+    - True if the list represents a valid UTF-8 encoding, False otherwise.
+    """
+
+    # Edge case: if data is empty, return False
+    if not data:
+        return False
+
+    # Validate each byte in data
+    for num in data:
+        # Check if num is a valid byte value (0-255)
+        if num < 0 or num > 255:
+            return False
+
+    bitList = []
+
+    # Convert each number to its 8-bit binary representation
+    for num in data:
+        bitList.append(bin(num).replace("0b", "").zfill(8))
+
+    # Iterate through each binary representation
+    for i in range(len(bitList)):
+        if bitList[i][0] == '0':
+            # Single byte sequence (0xxxxxxx)
+            continue
         else:
-            '''checks if current byte has format 10xxxxxx'''
-            if not (data[i] & (1 << 7) and not (data[i] & (1 << 6))):
+            # Multi-byte sequence: Determine number of bytes
+            count = 0
+            for x in range(len(bitList[i])):
+                if bitList[i][x] == '1':
+                    count += 1
+                else:
+                    break
+            # Check continuation bytes
+            if count == 1 or count > 4:
                 return False
-        bits_count -= 1
-    return bits_count == 0
+            for c in range(1, count):
+                if bitList[i + c][0:2] != '10':
+                    return False
+
+    # All checks passed, return True indicating valid UTF-8
+    return True

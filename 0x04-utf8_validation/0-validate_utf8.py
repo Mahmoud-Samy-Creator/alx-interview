@@ -34,6 +34,9 @@ def validUTF8(data):
 
     # Iterate through each binary representation
     for i in range(len(bitList)):
+        if i + 1 >= len(bitList):
+            return False
+
         if bitList[i][0] == '0':
             # Single byte sequence (0xxxxxxx)
             continue
@@ -47,7 +50,7 @@ def validUTF8(data):
                     break
             # Check continuation bytes
             for c in range(1, count):
-                if bitList[i + c][0:2] != '10' or i + 1 >= len(bitList):
+                if bitList[i + c][0:2] != '10':
                     return False
 
     # All checks passed, return True indicating valid UTF-8

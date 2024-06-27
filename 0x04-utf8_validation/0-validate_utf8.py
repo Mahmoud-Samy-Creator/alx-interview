@@ -34,9 +34,6 @@ def validUTF8(data):
 
     # Iterate through each binary representation
     for i in range(len(bitList)):
-        if i + 1 >= len(bitList):
-            return False
-
         if bitList[i][0] == '0':
             # Single byte sequence (0xxxxxxx)
             continue

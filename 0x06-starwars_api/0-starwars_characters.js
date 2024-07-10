@@ -1,24 +1,55 @@
 #!/usr/bin/node
 
-const filmID = process.argv[2]
 const request = require('request');
+
+if (process.argv.length < 3) {
+    console.log('Usage: ./script.js <movie_id>');
+    process.exit(1);
+}
+
+const filmID = process.argv[2];
 const apiUrl = `https://swapi-api.alx-tools.com/api/films/${filmID}`;
 
-request(apiUrl, (error, response, body) => {
+function makeURLReq(url) {
+    return new Promise((resolve, reject) => {
+        request(url, (error, response, body) => {
+            if (error) {
+                reject(error);
+            } else {
+                try {
+                    const characterJSON = JSON.parse(body);
+                    resolve(characterJSON.name);
+                } catch (e) {
+                    reject(e);
+                }
+            }
+        });
+    });
+}
 
+request(apiUrl, (error, response, body) => {
     if (error) {
-        throw error;
+        console.error('Error fetching film data:', error);
+        return;
     }
 
-    let json = JSON.parse(body);
-    let characters = json.characters
+    try {
+        const json = JSON.parse(body);
+        const characters = json.characters;
 
-    characters.map((character) => {
-        const characterAPI = character;
+        // Map characters to promises of fetching their names
+        const characterPromises = characters.map(character => makeURLReq(character));
 
-        request(characterAPI, (error, response, body) => {
-            const characterJSON = JSON.parse(body);
-            console.log(characterJSON.name)
-        })
-    })
+        // Resolve all promises concurrently
+        Promise.all(characterPromises)
+            .then(characterNames => {
+                characterNames.forEach(name => console.log(name));
+            })
+            .catch(err => {
+                console.error('Error fetching character data:', err);
+            });
+
+    } catch (e) {
+        console.error('Error parsing film data:', e);
+    }
 });
